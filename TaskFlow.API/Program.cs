@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using TaskFlow.Application.ServiceExtensions;
 using TaskFlow.Infrastructure.AppDbContext;
+using TaskFlow.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,10 @@ builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer
 #endregion
 
 // Add services to the container.
+
+builder.Services.AddInfrastructureServices();
+
+builder.Services.AddApplicationExtensionService();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

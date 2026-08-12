@@ -13,7 +13,7 @@ namespace TaskFlow.Infrastructure.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly TaskFlowDbContext _context;
-        private DbSet<T> _dbSet;
+        private readonly DbSet<T> _dbSet;
 
         public GenericRepository(TaskFlowDbContext context)
         {
@@ -27,9 +27,9 @@ namespace TaskFlow.Infrastructure.Repository
             return data.Entity;
         }
 
-        public async Task DeleteAsync(Guid Id)
+        public async Task DeleteAsync(Guid id)
         {
-            var data =await _dbSet.FindAsync(Id);
+            var data =await _dbSet.FindAsync(id);
             if(data != null)
             {
                 _dbSet.Remove(data);
@@ -48,9 +48,9 @@ namespace TaskFlow.Infrastructure.Repository
             return data;
         }
 
-        public async Task<T> GetByIdAsync(Guid Id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
-            var data = await _dbSet.FindAsync(Id);
+            var data = await _dbSet.FindAsync(id);
             return data;
         }
 
