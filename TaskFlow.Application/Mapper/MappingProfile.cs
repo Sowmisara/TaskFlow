@@ -14,7 +14,7 @@ namespace TaskFlow.Application.Mapper
         public MappingProfile()
         {
             CreateMap<CreateIssueDTO,Issue>();
-            CreateMap<IssueDTO,Issue>();
+            CreateMap<Issue,IssueDTO>();
         }
     }
 }
