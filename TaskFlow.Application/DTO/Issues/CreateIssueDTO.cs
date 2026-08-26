@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,6 @@ namespace TaskFlow.Application.DTO.Issues
 
         public IssuePriority Priority { get; set; }
 
-
         public Guid ProjectId { get; set; }
 
         public Project Project { get; set; }
@@ -28,5 +28,15 @@ namespace TaskFlow.Application.DTO.Issues
         public User AssignedToUser { get; set; }
 
         public DateTime? DueDate { get; set; }
+    }
+
+
+    public class CreateIssueValidatorDTO : AbstractValidator<CreateIssueDTO>
+    {
+        public CreateIssueValidatorDTO()
+        {
+            RuleFor(x => x.Title).NotNull().NotEmpty().MaximumLength(200);
+            RuleFor(x => x.ProjectId).NotEmpty().NotNull();
+        }
     }
 }
