@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,20 @@ namespace TaskFlow.Application.Service
     {
         private readonly IUnitOfWork _unit;
         private readonly IMapper _mapper;
-        public IssueService(IUnitOfWork unit,IMapper mapper)
+        private readonly IValidator<CreateIssueDTO> _validator;
+        public IssueService(IUnitOfWork unit,IMapper mapper, IValidator<CreateIssueDTO> validator)
         {
             _unit = unit;   
             _mapper = mapper;
+            _validator = validator;
         }
         public async Task<IssueDTO> CreateIssueAsync(CreateIssueDTO issue)
-        {            
+        {   
+            var validationResult = await _validator.ValidateAsync(issue);
+            if (!validationResult.IsValid)
+            {
+                throw new Exception();
+            }
             var dto = _mapper.Map<Issue>(issue);
             dto.Status = IssueStatus.Open;
             var entity = await _unit.Issue.AddAsync(dto);

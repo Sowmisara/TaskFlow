@@ -17,19 +17,14 @@ namespace TaskFlow.Application.DTO.Issues
 
        // public IssueStatus Status { get; set; }
 
-        public IssuePriority Priority { get; set; }
+        public IssuePriority Priority { get; set; } 
 
         public Guid ProjectId { get; set; }
 
-        public Project Project { get; set; }
-
         public Guid? AssignedToUserId { get; set; }
-
-        public User AssignedToUser { get; set; }
 
         public DateTime? DueDate { get; set; }
     }
-
 
     public class CreateIssueValidatorDTO : AbstractValidator<CreateIssueDTO>
     {
@@ -37,6 +32,19 @@ namespace TaskFlow.Application.DTO.Issues
         {
             RuleFor(x => x.Title).NotNull().NotEmpty().MaximumLength(200);
             RuleFor(x => x.ProjectId).NotEmpty().NotNull();
+
+           RuleFor(x => x.Title)
+                .NotEmpty().WithMessage("Title is required.")
+                .MaximumLength(100).WithMessage("Title cannot exceed 100 characters.");
+
+            RuleFor(x => x.Description)
+                .MaximumLength(500).WithMessage("Description cannot exceed 500 characters.");
+
+            RuleFor(x => x.Priority)
+                .IsInEnum().WithMessage("Priority must be a valid value.");
+
+            RuleFor(x => x.ProjectId)
+                .NotEmpty().WithMessage("ProjectId is required.");
         }
     }
 }
