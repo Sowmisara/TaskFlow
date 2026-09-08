@@ -9,7 +9,7 @@ using TaskFlow.Domain.Models;
 
 namespace TaskFlow.Application.DTO.Issues
 {
-    public class CreateIssueDTO 
+    public record CreateIssueDTO 
     {
         public string Title { get; set; }
 
@@ -30,9 +30,6 @@ namespace TaskFlow.Application.DTO.Issues
     {
         public CreateIssueValidatorDTO()
         {
-            RuleFor(x => x.Title).NotNull().NotEmpty().MaximumLength(200);
-            RuleFor(x => x.ProjectId).NotEmpty().NotNull();
-
            RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Title is required.")
                 .MaximumLength(100).WithMessage("Title cannot exceed 100 characters.");
@@ -43,8 +40,7 @@ namespace TaskFlow.Application.DTO.Issues
             RuleFor(x => x.Priority)
                 .IsInEnum().WithMessage("Priority must be a valid value.");
 
-            RuleFor(x => x.ProjectId)
-                .NotEmpty().WithMessage("ProjectId is required.");
+            RuleFor(x => x.ProjectId).NotNull().NotEmpty().WithMessage("ProjectId is required.");
         }
     }
 }

@@ -29,7 +29,7 @@ namespace TaskFlow.Application.Service
             var validationResult = await _validator.ValidateAsync(issue);
             if (!validationResult.IsValid)
             {
-                throw new Exception();
+                throw new ValidationException(validationResult.Errors);
             }
             var dto = _mapper.Map<Issue>(issue);
             dto.Status = IssueStatus.Open;
