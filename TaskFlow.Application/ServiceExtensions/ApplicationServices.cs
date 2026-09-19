@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskFlow.Application.DTO.Auth;
 using TaskFlow.Application.DTO.Issues;
 using TaskFlow.Application.IService;
 using TaskFlow.Application.Mapper;
@@ -22,6 +23,8 @@ namespace TaskFlow.Application.ServiceExtensions
             });
             _service.AddScoped<IIssueService,IssueService>();
             _service.AddValidatorsFromAssemblyContaining<CreateIssueValidatorDTO>();
+            _service.AddValidatorsFromAssemblyContaining<RegisterDTOValidator>();
+            _service.AddValidatorsFromAssemblyContaining<LoginDTOValidator>();
             return _service;
         }
     }

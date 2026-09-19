@@ -1,14 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaskFlow.Domain.Models;
+using TaskFlow.Infrastructure.Identity;
 
 namespace TaskFlow.Infrastructure.AppDbContext
 {
-    public class TaskFlowDbContext : DbContext
+    public class TaskFlowDbContext : IdentityDbContext<ApplicationUser>
     {
         public TaskFlowDbContext(DbContextOptions<TaskFlowDbContext> options) : base(options)
         {
@@ -22,8 +24,8 @@ namespace TaskFlow.Infrastructure.AppDbContext
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfigurationsFromAssembly(typeof(TaskFlowDbContext).Assembly);
             base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(typeof(TaskFlowDbContext).Assembly);
         }
     }
 

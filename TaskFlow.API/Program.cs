@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Text.Json.Serialization;
@@ -6,6 +7,7 @@ using TaskFlow.Application.DTO.Issues;
 using TaskFlow.Application.ServiceExtensions;
 using TaskFlow.Infrastructure.AppDbContext;
 using TaskFlow.Infrastructure.Extensions;
+using TaskFlow.Infrastructure.Identity;
 
 
 try
@@ -20,7 +22,18 @@ try
     #region DbContext
 
     builder.Services.AddDbContext<TaskFlowDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    builder.Services.AddIdentity<ApplicationUser,IdentityRole>(options =>
+    {
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = false;
 
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+        options.Lockout.MaxFailedAccessAttempts = 5;
+
+       options.User.RequireUniqueEmail = true;
+    }).AddEntityFrameworkStores<TaskFlowDbContext>().AddDefaultTokenProviders();
     #endregion
 
     // Add services to the container.
@@ -56,7 +69,7 @@ try
 
     app.Run();
 }
-catch(Exception ex)
+catch(Exception ex) when (ex is not HostAbortedException)
 {
     Log.Fatal(ex, "Application terminated unexpectedly");
 }

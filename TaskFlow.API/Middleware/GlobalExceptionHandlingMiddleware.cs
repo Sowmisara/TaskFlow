@@ -32,7 +32,7 @@ namespace TaskFlow.API.Middleware
                 await WriteErrorResponseAsync(context, errors);
             }
             catch (Exception ex) {
-                _logger.LogError(ex, "Unhandled exception occurred");
+                _logger.LogError(ex, "Unhandled exception occurred",ex.Message);
                 var errors = new ErrorResponse
                 {
                     StatusCode = StatusCodes.Status500InternalServerError,
